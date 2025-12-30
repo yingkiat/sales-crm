@@ -1,1 +1,58 @@
 trigger_id,company_id,category,description,evidence_link,date_observed,strength,date_added,added_by
+TRIG001,ych-group,expansion,YCH DistriPark Tuas opening,https://www.ych.com,2025-11,high,2025-12-30,system
+TRIG002,ych-group,expansion,RM500M Malaysia investment,https://www.ych.com,2025-11,high,2025-12-30,system
+TRIG003,ych-group,capex,US$200M Vietnam hub groundbreaking,https://www.ych.com,2025-11,high,2025-12-30,system
+TRIG004,yang-kee-logistics,capex,World's first automated container depot,https://www.yangkee.com,2025,high,2025-12-30,system
+TRIG005,yang-kee-logistics,m&a,Acquired Axima for A$34M,https://www.yangkee.com,2024,high,2025-12-30,system
+TRIG006,yang-kee-logistics,m&a,Acquired Fliway for NZ$52M,https://www.yangkee.com,2024,high,2025-12-30,system
+TRIG007,supreme-components-international,expansion,New Japan subsidiary launched,https://www.jetro.go.jp/en/invest/newsroom/2025/124dbb71bfb34180.html,2024-01,high,2025-12-30,system
+TRIG008,supreme-components-international,expansion,Expanding to Europe,https://www.supremecomponents.com,2024,medium,2025-12-30,system
+TRIG009,creative-eateries,m&a,Acquired by Asia White Knight,https://www.creativeeateries.com.sg,2024-11,high,2025-12-30,system
+TRIG010,creative-eateries,expansion,Target S$100M revenue in 5 years,https://www.creativeeateries.com.sg,2024-11,medium,2025-12-30,system
+TRIG011,creative-eateries,expansion,Expanding to Manila/Vietnam/Indonesia,https://www.creativeeateries.com.sg,2024,medium,2025-12-30,system
+TRIG012,beyond-medical-group,expansion,Opened Aare Urocare 2nd clinic,https://beyondmedical.com.sg,2024,medium,2025-12-30,system
+TRIG013,beyond-medical-group,expansion,Harmony Thyroid Centre launched,https://beyondmedical.com.sg,2024-01,medium,2025-12-30,system
+TRIG014,beyond-medical-group,expansion,Target 25 specialist clinics,https://beyondmedical.com.sg,2024,high,2025-12-30,system
+TRIG015,beyond-medical-group,m&a,Altair Capital investment,https://beyondmedical.com.sg,2022-10,high,2025-12-30,system
+TRIG016,sin-chew-woodpaq,m&a,Heliconia Capital (Temasek) investment,,2025-04,high,2025-12-30,system
+TRIG017,sin-chew-woodpaq,expansion,Planning 300000 sqft facility by 2026,,2024,high,2025-12-30,system
+TRIG018,sin-chew-woodpaq,expansion,Regional expansion to Malaysia/Thailand,,2024,medium,2025-12-30,system
+TRIG019,racer-technology,expansion,Founded Singapore MedTech Consortium (200+ SMEs),,2024,high,2025-12-30,system
+TRIG020,racer-technology,expansion,MOU with German Medical Valley,,2024,high,2025-12-30,system
+TRIG021,racer-technology,capex,A*STAR smart factory partnership,,2024,medium,2025-12-30,system
+TRIG022,total-ebiz-solutions,contract,2024 Microsoft Partner of Year (Government),,2024,high,2025-12-30,system
+TRIG023,total-ebiz-solutions,contract,Q1 2024 clients: MAS SkillsFuture MTI Parliament,,2024,high,2025-12-30,system
+TRIG024,total-ebiz-solutions,expansion,First D365 Cloud Contact Centre in SEA,,2024,medium,2025-12-30,system
+TRIG025,cyclect-group,expansion,New Tuas Workshop,,2024-06,medium,2025-12-30,system
+TRIG026,cyclect-group,expansion,Saudi Arabia MRO workshop,,2024,high,2025-12-30,system
+TRIG027,cyclect-group,contract,Data centre contracts,,2024,medium,2025-12-30,system
+TRIG028,tee-yih-jia,expansion,Nov 2025 hosted South African delegation,,2025-11,medium,2025-12-30,system
+TRIG029,tee-yih-jia,expansion,ALTN meat-free brand expansion to EU/US,,2025,high,2025-12-30,system
+TRIG030,nuffield-holdings,expansion,8 business entities expansion (Dental Medical Pharma Academy Lab),,2024,high,2025-12-30,system
+TRIG031,nuffield-holdings,expansion,E-Shop pharmaceutical launch,,2024-11,medium,2025-12-30,system
+TRIG032,v-medical-aesthetics,expansion,March 2024 launched V Body Slim,,2024-03,high,2025-12-30,system
+TRIG033,v-medical-aesthetics,expansion,2 new flagship stores (Plaza Singapura Novena),,2024,high,2025-12-30,system
+TRIG034,v-medical-aesthetics,expansion,Rapid expansion to 21 locations,,2024,high,2025-12-30,system
+TRIG035,ya-kun-international,expansion,2025 Uniqlo SG60 collaboration,,2025,medium,2025-12-30,system
+TRIG036,ya-kun-international,expansion,Targeting Dubai/Bangkok/Manila,,2025,high,2025-12-30,system
+TRIG037,minmed-group,expansion,Partnership with Singapore General Hospital (SWIFT Care),,2024,high,2025-12-30,system
+TRIG038,minmed-group,expansion,New Punggol/Jewel clinics,,2024,medium,2025-12-30,system
+TRIG039,minmed-group,expansion,Home-based screening launch,,2024,medium,2025-12-30,system
+TRIG040,choon-huat-engineering,capex,Electric forklift investment,,2024,high,2025-12-30,system
+TRIG041,choon-huat-engineering,compliance,Sustainability leader in construction,,2024,medium,2025-12-30,system
+TRIG042,commonwealth-kokubu-logistics,expansion,Best Cold Chain Provider LogiSYM 2025 (2nd consecutive year),,2025,high,2025-12-30,system
+TRIG043,commonwealth-kokubu-logistics,expansion,Regional expansion planned,,2025,medium,2025-12-30,system
+TRIG044,afon-it,m&a,Acquired by BIPROGY (Japan),,2024,high,2025-12-30,system
+TRIG045,afon-it,expansion,Insightsoftware Growth Award,,2024,medium,2025-12-30,system
+TRIG046,dian-xiao-er,expansion,Aug 2024 17th outlet,,2024-08,medium,2025-12-30,system
+TRIG047,dian-xiao-er,expansion,Oct 2024 YY Group partnership for international expansion,,2024-10,high,2025-12-30,system
+TRIG048,orange-valley,capex,Facility upgrades across multiple homes,,2024,medium,2025-12-30,system
+TRIG049,orange-valley,expansion,Step-down care partnerships with CGH/St. Andrew's,,2024,medium,2025-12-30,system
+TRIG050,putien-group,expansion,Aug 2024 absorbed GST and waived service charge,,2024-08,medium,2025-12-30,system
+TRIG051,putien-group,expansion,Continued China expansion,,2024,high,2025-12-30,system
+TRIG052,fortuna-scientific,contract,2024 Runner-Up PCS Channel Partner,,2024,medium,2025-12-30,system
+TRIG053,fortuna-scientific,contract,Multiple Top Performance Awards from GE,,2024,high,2025-12-30,system
+TRIG054,ees-freight-services,expansion,Top 1000 SME Award (9 consecutive years),,2024,medium,2025-12-30,system
+TRIG055,justlogin,capex,Sept 2023 AI-powered Recruitment Module (ChatGPT),,2023-09,high,2025-12-30,system
+TRIG056,justlogin,expansion,100+ customers at AI HR event,,2024,medium,2025-12-30,system
+TRIG057,maha-chemicals,expansion,Regional expansion ongoing,,2024,medium,2025-12-30,system
