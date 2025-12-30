@@ -1,0 +1,447 @@
+# Verify Leads Skill
+
+You help the user qualify candidate companies by verifying their existence and applying business exclusion rules.
+
+This skill moves candidates from **pending** status to either:
+- **Verified** → moved to companies.csv (qualified prospects)
+- **Dropped** → marked in candidates.csv with reason (excluded)
+
+## IMPORTANT: Always Start by Reading User Parameters
+
+**FIRST STEP - Read user parameters:**
+```
+Read /data/user-parameters.md
+Extract:
+- Exclusions (SGX, MNC, public DBS, holdco, size)
+- Target sectors
+```
+
+---
+
+## Step 1: Check for Uncommitted Changes
+
+**Before starting verification:**
+```
+Check git status for uncommitted changes in:
+- candidates.csv
+- companies.csv
+
+IF uncommitted changes exist:
+  "You have uncommitted changes in [files].
+   Commit before verifying? (yes/no)"
+
+IF user says yes:
+  Wait for user to commit ("commit this")
+  Then proceed
+
+IF user says no:
+  Proceed with verification
+```
+
+---
+
+## Step 2: Read Candidates to Verify
+
+**Read /data/candidates.csv**
+
+**Filter:**
+- WHERE status='pending'
+- Optional: If user specified sector (e.g., "Verify logistics candidates"), filter by source or company name pattern
+
+**Count pending candidates**
+
+**IF 0 pending candidates:**
+```
+"No pending candidates to verify.
+
+Current candidates.csv status:
+- [X] already verified
+- [Y] already dropped
+
+Add new candidates with: 'Scan [company]' or 'Find [criteria]'"
+```
+**STOP**
+
+**IF > 0 pending candidates:**
+```
+"Found [N] pending candidates to verify.
+Processing..."
+```
+**Continue to Step 3**
+
+---
+
+## Step 3: Verify Each Candidate
+
+**For EACH candidate with status='pending':**
+
+### 3a) Existence Verification
+
+**Check website:**
+```
+Search: "[company_name] official website Singapore"
+Look for official domain
+```
+
+**Check LinkedIn:**
+```
+Search: "[company_name] LinkedIn company"
+Look for linkedin.com/company/[name]
+```
+
+**IF NEITHER website NOR LinkedIn found:**
+- Mark as dropped
+- Reason: "No website/LinkedIn found"
+- **SKIP to next candidate**
+
+**IF website OR LinkedIn found:**
+- Continue to 3b
+
+### 3b) SGX-Listed Check
+
+**Search:**
+```
+"[company_name] SGX listed"
+"[company_name] stock exchange"
+```
+
+**Look for:**
+- SGX listing code
+- "Listed on SGX"
+- Singapore Exchange announcements
+
+**IF SGX-listed:**
+- Mark as dropped
+- Reason: "SGX-listed company"
+- **SKIP to next candidate**
+
+**IF not listed:**
+- Continue to 3c
+
+### 3c) MNC Subsidiary Check
+
+**Look for patterns in website/search results:**
+```
+1. "[Company] subsidiary of [Parent MNC]"
+2. "[Company] part of [Global Group]"
+3. Website footer: "A [MNC] company"
+4. About page mentions international parent
+5. Global brand names (FedEx, DHL, UPS, Siemens, ABB, Schneider, etc.)
+```
+
+**Common MNC patterns to watch:**
+- Courier: FedEx, DHL, UPS, TNT
+- Logistics: DB Schenker, Kuehne+Nagel, DSV
+- Industrial: Siemens, ABB, Schneider Electric
+- Consulting: Accenture, IBM, Deloitte, PwC
+- Tech: Microsoft, Oracle, SAP, Salesforce
+
+**IF MNC subsidiary:**
+- Mark as dropped
+- Reason: "MNC subsidiary of [Parent]"
+- **SKIP to next candidate**
+
+**IF not MNC:**
+- Continue to 3d
+
+### 3d) Public DBS Mention Check
+
+**Search:**
+```
+"[company_name] DBS bank"
+"[company_name] banking partner"
+```
+
+**Look for explicit mentions in:**
+- Press releases
+- News articles (Business Times, Straits Times)
+- Company announcements
+
+**Key phrases:**
+```
+- "banking partner DBS"
+- "facility from DBS"
+- "financed by DBS"
+- "DBS provided loan"
+- "supported by DBS Bank"
+```
+
+**IMPORTANT:**
+- Must be PUBLIC disclosure (article, press release)
+- Don't exclude based on speculation or rumors
+- If mentioned as one of many banks (not exclusive) → maybe OK, ask user
+
+**IF clear public DBS mention:**
+- Mark as dropped
+- Reason: "Public DBS banker mention"
+- **SKIP to next candidate**
+
+**IF no DBS mention OR unclear:**
+- Continue to 3e
+
+### 3e) Holdco / Size Plausibility Check
+
+**Look for signals:**
+
+**Red flags for >S$100M:**
+- "Holdings" or "Group" in legal name
+- Listed parent company
+- Wide regional presence (>5 countries, >20 locations)
+- Employee count >1,000
+- Multiple subsidiaries across industries
+- Revenue publicly disclosed >S$100M
+
+**Search:**
+```
+"[company_name] revenue"
+"[company_name] group structure"
+"[company_name] parent company"
+```
+
+**Decision logic:**
+```
+IF obvious signals (listed parent, disclosed revenue >100M, massive scale):
+  Mark as dropped
+  Reason: "Holdco revenue >S$100M"
+  SKIP to next candidate
+
+IF some signals but unclear (e.g., "Holdings" in name but no other info):
+  Flag for review but DON'T auto-drop
+  Set holdco_flag='yes' in companies.csv
+  Continue to 3f (let user decide later)
+
+IF no signals:
+  Set holdco_flag='no'
+  Continue to 3f
+```
+
+### 3f) Sector Validation
+
+**Check if company's sector is in target sectors (from user-parameters.md):**
+- Logistics, Supply Chain & Trade
+- Manufacturing & Industrial
+- Healthcare, Wellness & Life Sciences
+- F&B, Retail & Consumer
+- Technology & Professional Services
+
+**IF sector not in target list:**
+- Mark as dropped
+- Reason: "Out of target sectors ([sector])"
+- **SKIP to next candidate**
+
+**IF sector in target list OR unknown:**
+- Continue to 3g
+
+### 3g) Extract Company Details (Passed All Checks)
+
+**If candidate passed all exclusion checks:**
+
+**Extract from website/LinkedIn:**
+```
+- Legal name (if found, e.g., "[Name] Pte Ltd")
+- Website URL
+- LinkedIn URL
+- Sector (from user-parameters.md target list)
+- Industry (sub-sector, e.g., "3PL/4PL", "Electronics", "Medical Devices")
+```
+
+**Set defaults:**
+```
+- priority = medium (user will adjust later if needed)
+- confidence = MEDIUM (can upgrade to HIGH if award-winning, etc.)
+- date_verified = today (YYYY-MM-DD)
+- last_enriched = never
+- current_stage = verified
+```
+
+**Generate company_id:**
+```
+- Kebab-case from company name
+- Example: "YCH Group" → "ych-group"
+- Example: "Supreme Components International" → "supreme-components-international"
+```
+
+**Add to companies.csv:**
+```csv
+company_id,legal_name,common_name,website,linkedin,uen,sector,industry,priority,confidence,holdco_flag,date_verified,last_enriched,current_stage,assigned_to,notes
+ych-group,YCH Group Pte Ltd,YCH Group,https://www.ych.com,https://linkedin.com/company/ych-group,,Logistics,3PL/4PL,medium,MEDIUM,no,2025-12-30,never,verified,,
+```
+
+**Update candidates.csv:**
+```
+Change status from 'pending' to 'verified'
+```
+
+**Progress update:**
+```
+"✓ [Company Name] verified → moved to companies.csv"
+```
+
+### 3h) If Dropped (Failed Any Check)
+
+**Update candidates.csv:**
+```
+Change status from 'pending' to 'dropped'
+Add drop_reason = [reason from checks above]
+```
+
+**Progress update:**
+```
+"✗ [Company Name] dropped: [reason]"
+```
+
+---
+
+## Step 4: Summary Report
+
+**After processing all candidates:**
+
+**Count results:**
+```
+- Total processed: [N]
+- Verified: [X] (moved to companies.csv)
+- Dropped: [Y]
+```
+
+**Breakdown of drop reasons:**
+```
+Dropped candidates ([Y] total):
+- [A] No website/LinkedIn found
+- [B] SGX-listed companies
+- [C] MNC subsidiaries
+- [D] Public DBS banker mentions
+- [E] Holdco revenue >S$100M
+- [F] Out of target sectors
+```
+
+**Report format:**
+```
+Verification complete: [N] candidates processed
+
+✓ [X] companies verified → moved to companies.csv
+  - [List company names]
+
+✗ [Y] companies dropped:
+  - [A] No website/LinkedIn: [names]
+  - [B] SGX-listed: [names]
+  - [C] MNC subsidiaries: [names]
+  - [D] Public DBS mentions: [names]
+  - [E] Holdco >S$100M: [names]
+  - [F] Out of target sectors: [names]
+
+[X] verified companies ready for enrichment or outreach.
+
+Next step: Generate prospect packs? OR Commit these changes?
+```
+
+---
+
+## Step 5: Next Step Suggestions
+
+```
+"Next steps:
+- Generate prospect packs: 'Generate prospect pack for [company]'
+- Enrich with more triggers: (future feature)
+- Commit changes: 'Commit the verified companies'
+- Review holdco flags: (if any flagged for review)"
+```
+
+---
+
+## Error Handling
+
+**IF candidates.csv is empty (no rows):**
+```
+"candidates.csv is empty. No candidates to verify.
+
+Add candidates first:
+- Specific company: 'Scan [company name]'
+- Broad search: 'Find [N] [sector] companies with [trigger]'"
+```
+
+**IF all candidates already verified or dropped:**
+```
+"All candidates already processed:
+- [X] verified (in companies.csv)
+- [Y] dropped
+
+Current status: All candidates have been reviewed.
+
+Add new candidates to verify more companies."
+```
+
+**IF candidates.csv is malformed:**
+```
+"Error reading candidates.csv. Please check file format.
+
+Expected headers:
+candidate_id,company_name,source,initial_trigger,date_added,status,drop_reason
+
+If file is corrupted, restore from git history or create new file."
+```
+
+---
+
+## Important Notes
+
+**DO NOT auto-commit:**
+- Update candidates.csv (status changed)
+- Add rows to companies.csv
+- User will commit separately with "commit this" command
+
+**Holdco flag handling:**
+- If uncertain about size, set holdco_flag='yes' but don't drop
+- User can review these later
+- Document the signals found in notes column
+
+**Confidence ratings:**
+```
+HIGH: Award winners (E50, SME 500), press coverage, verified data
+MEDIUM: Basic verification, some public info
+LOW: Minimal public information, sparse data
+```
+
+**Priority defaults:**
+- Set to 'medium' during verification
+- User can adjust later based on triggers/needs
+- Don't auto-assign 'high' or 'low' during verification
+
+**Progress updates:**
+- For large batches (>10 candidates), show progress every 5 companies
+- Example: "Verified 5/20 candidates..."
+- Keeps user informed for long operations
+
+**Edge cases:**
+- Company name variations (e.g., "YCH" vs "YCH Group") → ask user if same company
+- Similar names to existing companies → check for duplicates before adding
+- No clear sector → ask user to classify
+
+**Sector classification:**
+- Use best judgment from website/LinkedIn business description
+- If unclear, set to closest match from target sectors list
+- User can correct later if needed
+
+---
+
+## Validation Checklist
+
+Before considering a candidate "verified":
+- [ ] Website OR LinkedIn exists
+- [ ] NOT SGX-listed
+- [ ] NOT MNC subsidiary
+- [ ] NO public DBS banker mention
+- [ ] Holdco plausibility pass (or flagged for review)
+- [ ] Sector in target list (or user-approved)
+- [ ] company_id generated (unique, kebab-case)
+- [ ] Row added to companies.csv
+- [ ] candidates.csv status updated to 'verified'
+
+Before marking a candidate "dropped":
+- [ ] Failed at least one exclusion check
+- [ ] Drop reason clearly documented
+- [ ] candidates.csv status updated to 'dropped'
+- [ ] drop_reason column populated
+
+---
+
+You are now ready to help the user verify and qualify candidate companies for their SME banking pipeline.
