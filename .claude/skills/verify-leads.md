@@ -236,11 +236,41 @@ IF no signals:
 
 **If candidate passed all exclusion checks:**
 
-**Extract from website/LinkedIn:**
+**Step 3g-1: ACRA Lookup (UEN + Paid-up Capital)**
+
+Search for ACRA data using WebSearch:
+```
+Search query: "[Legal Name] UEN Singapore ACRA paid-up capital"
+
+Look for results from:
+- companies.sg
+- sgpbusiness.com
+- recordowl.com
+- opengovsg.com
+
+Extract:
+- UEN (Unique Entity Number) - 9-10 digit code
+- Paid-up Capital - SGD amount
+- Company Status - Live/Struck Off
+- Incorporation Date (optional)
+
+Format paid-up capital as: "S$XXM" or "S$XX.XM"
+Examples: "S$10.7M", "S$1M", "S$500K"
+
+IF no ACRA data found:
+  Leave UEN and paid_up_capital empty
+  Continue with other details
+```
+
+**Step 3g-2: Extract from website/LinkedIn:**
 ```
 - Legal name (if found, e.g., "[Name] Pte Ltd")
 - Website URL
 - LinkedIn URL
+- Annual revenue (if publicly disclosed; otherwise estimate with "~" prefix)
+  Format: "S$XXM" (declared) or "~S$XXM" (estimated)
+  Examples: "S$45M", "~S$30M", "S$400M+"
+  Use paid-up capital as reference if available (typical 5-20x multiplier)
 - Sector (from user-parameters.md target list)
 - Industry (sub-sector, e.g., "3PL/4PL", "Electronics", "Medical Devices")
 ```
@@ -262,10 +292,33 @@ IF no signals:
 ```
 
 **Add to companies.csv:**
-```csv
-company_id,legal_name,common_name,website,linkedin,uen,sector,industry,priority,confidence,holdco_flag,date_verified,last_enriched,current_stage,assigned_to,notes
-ych-group,YCH Group Pte Ltd,YCH Group,https://www.ych.com,https://linkedin.com/company/ych-group,,Logistics,3PL/4PL,medium,MEDIUM,no,2025-12-30,never,verified,,
+
+**CRITICAL CSV FORMAT REQUIREMENT:**
+- ALL 18 columns must be present for every row
+- Empty fields must use empty string (consecutive commas: ,,)
+- NEVER skip columns - preserve column order exactly
+- UEN, paid_up_capital, and annual_revenue fields may be empty - must still include comma placeholders
+
+**New column order:**
 ```
+company_id,legal_name,common_name,website,linkedin,uen,paid_up_capital,annual_revenue,sector,industry,priority,confidence,holdco_flag,date_verified,last_enriched,current_stage,assigned_to,notes
+```
+
+**Example with all fields:**
+```csv
+ych-group,YCH Group Pte Ltd,YCH Group,https://www.ych.com,https://linkedin.com/company/ych-group,198003684Z,S$10.7M,~S$80M,Logistics,3PL/4PL,medium,HIGH,no,2025-12-30,never,verified,,
+```
+
+**Example with missing website/LinkedIn/UEN but with paid-up capital:**
+```csv
+example-company,Example Company Pte Ltd,Example Company,,,200104742C,S$1M,~S$20M,Manufacturing,Electronics,medium,HIGH,no,2025-12-30,never,verified,,Award winner
+```
+
+**Example with all financial fields empty:**
+```csv
+new-company,New Company Pte Ltd,New Company,https://example.com,,,,~S$15M,Technology,SaaS,medium,MEDIUM,no,2025-12-30,never,verified,,
+```
+^ Notice: `New Company,https://example.com,,,,~S$15M` = has website, empty linkedin, empty UEN, empty paid_up_capital, then annual_revenue estimate
 
 **Update candidates.csv:**
 ```

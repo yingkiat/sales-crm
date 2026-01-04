@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SME Banking Pipeline Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #d72027;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            margin-right: 5px;
+        }
+
+        .filter-group select, .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            background: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            background: #f0f0f0;
+        }
+
+        .tab.active {
+            background: #d72027;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .kanban {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .kanban-column {
+            background: #e8e8e8;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 400px;
+        }
+
+        .kanban-column h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .kanban-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .kanban-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .kanban-card h4 {
+            color: #d72027;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .kanban-card .meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .kanban-card .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .badge.high { background: #ffe5e5; color: #d72027; }
+        .badge.medium { background: #fff4e5; color: #ff9800; }
+        .badge.low { background: #e5f5e5; color: #4caf50; }
+
+        table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #f8f8f8;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            cursor: pointer;
+        }
+
+        th:hover {
+            background: #f0f0f0;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            color: #d72027;
+            margin-bottom: 20px;
+        }
+
+        .modal-content .field {
+            margin-bottom: 15px;
+        }
+
+        .modal-content .field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .modal-content .field .value {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SME Banking Pipeline Dashboard</h1>
+        <p>Real-time view of companies.csv + engagement.csv | <span id="lastUpdate"></span></p>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="filters">
+        <div class="filter-group">
+            <div>
+                <label>Search:</label>
+                <input type="text" id="searchInput" placeholder="Company name...">
+            </div>
+            <div>
+                <label>Sector:</label>
+                <select id="sectorFilter">
+                    <option value="">All Sectors</option>
+                </select>
+            </div>
+            <div>
+                <label>Status:</label>
+                <select id="statusFilter">
+                    <option value="">All Status</option>
+                    <option value="qualified">Qualified</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="kiv">KIV</option>
+                    <option value="no_contact">No Contact</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="prospect">Not Contacted</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="pipeline">Pipeline View</div>
+        <div class="tab" data-tab="table">Table View</div>
+        <div class="tab" data-tab="opportunities">Top Opportunities</div>
+    </div>
+
+    <div id="pipeline" class="tab-content active">
+        <div class="kanban" id="kanban"></div>
+    </div>
+
+    <div id="table" class="tab-content">
+        <table id="companiesTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable('common_name')">Company</th>
+                    <th onclick="sortTable('sector')">Sector</th>
+                    <th onclick="sortTable('annual_revenue')">Revenue</th>
+                    <th onclick="sortTable('engagement_status')">Status</th>
+                    <th onclick="sortTable('last_contact_date')">Last Contact</th>
+                    <th onclick="sortTable('next_action_date')">Next Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div id="opportunities" class="tab-content">
+        <div id="opportunitiesList"></div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let companies = [];
+        let engagement = [];
+        let mergedData = [];
+
+        // Load CSV files
+        async function loadData() {
+            try {
+                const [companiesResp, engagementResp] = await Promise.all([
+                    fetch('data/companies.csv'),
+                    fetch('data/engagement.csv')
+                ]);
+
+                companies = parseCSV(await companiesResp.text());
+                engagement = parseCSV(await engagementResp.text());
+
+                mergeData();
+                renderDashboard();
+                document.getElementById('lastUpdate').textContent = `Last updated: ${new Date().toLocaleString()}`;
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert('Error loading CSV files. Make sure companies.csv and engagement.csv exist in the data/ folder.');
+            }
+        }
+
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
+            return lines.slice(1).map(line => {
+                const values = parseCSVLine(line);
+                const obj = {};
+                headers.forEach((header, i) => {
+                    obj[header] = values[i] || '';
+                });
+                return obj;
+            });
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        function mergeData() {
+            const engagementMap = {};
+            engagement.forEach(e => {
+                engagementMap[e.company_id] = e;
+            });
+
+            mergedData = companies.map(c => ({
+                ...c,
+                engagement_status: engagementMap[c.company_id]?.engagement_status || 'prospect',
+                last_contact_date: engagementMap[c.company_id]?.last_contact_date || '',
+                contact_name: engagementMap[c.company_id]?.contact_name || '',
+                next_action: engagementMap[c.company_id]?.next_action || '',
+                next_action_date: engagementMap[c.company_id]?.next_action_date || '',
+                engagement_notes: engagementMap[c.company_id]?.engagement_notes || '',
+                existing_banker: engagementMap[c.company_id]?.existing_banker || '',
+                rejection_reason: engagementMap[c.company_id]?.rejection_reason || ''
+            }));
+        }
+
+        function renderDashboard() {
+            renderStats();
+            renderFilters();
+            renderKanban();
+            renderTable();
+            renderOpportunities();
+        }
+
+        function renderStats() {
+            const total = mergedData.length;
+            const engaged = mergedData.filter(c => c.engagement_status !== 'prospect').length;
+            const qualified = mergedData.filter(c => c.engagement_status === 'qualified').length;
+            const contacted = mergedData.filter(c => c.engagement_status === 'contacted').length;
+            const kiv = mergedData.filter(c => c.engagement_status === 'kiv').length;
+
+            const today = new Date();
+            const overdue = mergedData.filter(c => {
+                if (!c.next_action_date) return false;
+                return new Date(c.next_action_date) < today;
+            }).length;
+
+            document.getElementById('stats').innerHTML = `
+                <div class="stat-card">
+                    <h3>Total Companies</h3>
+                    <div class="number">${total}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Engaged</h3>
+                    <div class="number">${engaged}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Qualified</h3>
+                    <div class="number">${qualified}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Contacted</h3>
+                    <div class="number">${contacted}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>KIV</h3>
+                    <div class="number">${kiv}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Overdue Actions</h3>
+                    <div class="number" style="color: ${overdue > 0 ? '#ff5722' : '#4caf50'}">${overdue}</div>
+                </div>
+            `;
+        }
+
+        function renderFilters() {
+            const sectors = [...new Set(mergedData.map(c => c.sector))].filter(s => s);
+            const sectorSelect = document.getElementById('sectorFilter');
+            sectorSelect.innerHTML = '<option value="">All Sectors</option>' +
+                sectors.map(s => `<option value="${s}">${s}</option>`).join('');
+
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            sectorSelect.addEventListener('change', applyFilters);
+            document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        }
+
+        function applyFilters() {
+            renderKanban();
+            renderTable();
+            renderOpportunities();
+        }
+
+        function getFilteredData() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const sector = document.getElementById('sectorFilter').value;
+            const status = document.getElementById('statusFilter').value;
+
+            return mergedData.filter(c => {
+                const matchSearch = !search || c.common_name.toLowerCase().includes(search);
+                const matchSector = !sector || c.sector === sector;
+                const matchStatus = !status || c.engagement_status === status;
+                return matchSearch && matchSector && matchStatus;
+            });
+        }
+
+        function renderKanban() {
+            const filtered = getFilteredData();
+            const columns = {
+                'prospect': { title: 'Not Contacted', data: [] },
+                'contacted': { title: 'Contacted', data: [] },
+                'qualified': { title: 'Qualified', data: [] },
+                'kiv': { title: 'KIV', data: [] },
+                'rejected': { title: 'Rejected', data: [] },
+                'no_contact': { title: 'No Contact', data: [] }
+            };
+
+            filtered.forEach(c => {
+                if (columns[c.engagement_status]) {
+                    columns[c.engagement_status].data.push(c);
+                }
+            });
+
+            document.getElementById('kanban').innerHTML = Object.entries(columns).map(([key, col]) => `
+                <div class="kanban-column">
+                    <h3>${col.title} (${col.data.length})</h3>
+                    ${col.data.map(c => `
+                        <div class="kanban-card" onclick="showDetails('${c.company_id}')">
+                            <h4>${c.common_name}</h4>
+                            <div class="meta">${c.sector} | ${c.annual_revenue || 'Revenue unknown'}</div>
+                            ${c.contact_name ? `<div class="meta">Contact: ${c.contact_name}</div>` : ''}
+                            ${c.next_action_date ? `<div class="meta">Next: ${c.next_action_date}</div>` : ''}
+                            <span class="badge ${c.priority}">${c.priority || 'medium'}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function renderTable() {
+            const filtered = getFilteredData();
+            document.getElementById('tableBody').innerHTML = filtered.map(c => `
+                <tr onclick="showDetails('${c.company_id}')">
+                    <td><strong>${c.common_name}</strong></td>
+                    <td>${c.sector}</td>
+                    <td>${c.annual_revenue || '-'}</td>
+                    <td>${c.engagement_status}</td>
+                    <td>${c.last_contact_date || '-'}</td>
+                    <td>${c.next_action_date || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderOpportunities() {
+            const qualified = getFilteredData().filter(c => c.engagement_status === 'qualified');
+            const contacted = getFilteredData().filter(c => c.engagement_status === 'contacted');
+
+            document.getElementById('opportunitiesList').innerHTML = `
+                <div class="chart-container">
+                    <h2>Qualified Leads (${qualified.length})</h2>
+                    ${qualified.length ? `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Contact</th>
+                                    <th>Revenue</th>
+                                    <th>Next Action</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${qualified.map(c => `
+                                    <tr onclick="showDetails('${c.company_id}')">
+                                        <td><strong>${c.common_name}</strong></td>
+                                        <td>${c.contact_name || 'TBD'}</td>
+                                        <td>${c.annual_revenue || 'Unknown'}</td>
+                                        <td>${c.next_action || 'TBD'}</td>
+                                        <td>${c.next_action_date || '-'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    ` : '<div class="empty-state">No qualified leads yet</div>'}
+                </div>
+
+                <div class="chart-container">
+                    <h2>Contacted - In Progress (${contacted.length})</h2>
+                    ${contacted.length ? `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Contact</th>
+                                    <th>Last Contact</th>
+                                    <th>Existing Bank</th>
+                                    <th>Next Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${contacted.map(c => `
+                                    <tr onclick="showDetails('${c.company_id}')">
+                                        <td><strong>${c.common_name}</strong></td>
+                                        <td>${c.contact_name || 'TBD'}</td>
+                                        <td>${c.last_contact_date || '-'}</td>
+                                        <td>${c.existing_banker || 'Unknown'}</td>
+                                        <td>${c.next_action || 'TBD'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    ` : '<div class="empty-state">No contacted companies</div>'}
+                </div>
+            `;
+        }
+
+        function showDetails(companyId) {
+            const company = mergedData.find(c => c.company_id === companyId);
+            if (!company) return;
+
+            document.getElementById('modalContent').innerHTML = `
+                <h2>${company.common_name}</h2>
+                <div class="field">
+                    <label>Legal Name:</label>
+                    <div class="value">${company.legal_name || '-'}</div>
+                </div>
+                <div class="field">
+                    <label>Sector / Industry:</label>
+                    <div class="value">${company.sector} / ${company.industry || '-'}</div>
+                </div>
+                <div class="field">
+                    <label>Annual Revenue:</label>
+                    <div class="value">${company.annual_revenue || 'Unknown'}</div>
+                </div>
+                <div class="field">
+                    <label>UEN:</label>
+                    <div class="value">${company.uen || 'Not yet retrieved'}</div>
+                </div>
+                <div class="field">
+                    <label>Paid-up Capital:</label>
+                    <div class="value">${company.paid_up_capital || 'Not yet retrieved'}</div>
+                </div>
+                <div class="field">
+                    <label>Website:</label>
+                    <div class="value">${company.website ? `<a href="${company.website}" target="_blank">${company.website}</a>` : '-'}</div>
+                </div>
+                <div class="field">
+                    <label>LinkedIn:</label>
+                    <div class="value">${company.linkedin ? `<a href="${company.linkedin}" target="_blank">${company.linkedin}</a>` : '-'}</div>
+                </div>
+                <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+                <div class="field">
+                    <label>Engagement Status:</label>
+                    <div class="value"><strong>${company.engagement_status}</strong></div>
+                </div>
+                ${company.contact_name ? `
+                <div class="field">
+                    <label>Contact:</label>
+                    <div class="value">${company.contact_name}</div>
+                </div>
+                ` : ''}
+                ${company.last_contact_date ? `
+                <div class="field">
+                    <label>Last Contact:</label>
+                    <div class="value">${company.last_contact_date}</div>
+                </div>
+                ` : ''}
+                ${company.existing_banker ? `
+                <div class="field">
+                    <label>Existing Banker:</label>
+                    <div class="value">${company.existing_banker}</div>
+                </div>
+                ` : ''}
+                ${company.next_action ? `
+                <div class="field">
+                    <label>Next Action:</label>
+                    <div class="value">${company.next_action} ${company.next_action_date ? `(${company.next_action_date})` : ''}</div>
+                </div>
+                ` : ''}
+                ${company.engagement_notes ? `
+                <div class="field">
+                    <label>Notes:</label>
+                    <div class="value">${company.engagement_notes}</div>
+                </div>
+                ` : ''}
+                ${company.rejection_reason ? `
+                <div class="field">
+                    <label>Rejection Reason:</label>
+                    <div class="value">${company.rejection_reason}</div>
+                </div>
+                ` : ''}
+                ${company.notes ? `
+                <div class="field">
+                    <label>Company Notes:</label>
+                    <div class="value">${company.notes}</div>
+                </div>
+                ` : ''}
+            `;
+
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Load data on page load
+        loadData();
+
+        // Refresh every 30 seconds
+        setInterval(loadData, 30000);
+    </script>
+</body>
+</html>

@@ -152,6 +152,115 @@ d9f89fd - MVP 1 complete: Added implementation summary (Phase 1 + Phase 2 done, 
 
 **Current Status:** All test data uncommitted (waiting for user to say "commit this")
 
+## Pull Request Workflow (For Data Updates)
+
+**IMPORTANT: Automatic PR Creation for Business Users**
+
+When running on Claude Code Web (claude.ai/code) and making data-related changes, automatically create a Pull Request after committing:
+
+### When to Create PRs:
+Create a PR automatically after ANY of these operations:
+- Updating companies.csv (new companies, UEN updates, revenue changes)
+- Updating triggers.csv (new triggers, enrichment data)
+- Updating user-parameters.md (exclusion criteria, target sectors)
+- Updating data in /data/ folder
+- Running verify-leads, scan-leads, or enrich-company skills
+
+### PR Creation Steps:
+1. **Commit changes first** (as per Git Commit Strategy above)
+2. **Create PR automatically** using this process:
+
+```bash
+# Check if on main branch
+IF on main branch:
+  SKIP PR creation (developer is working directly)
+
+IF on feature branch (claude/* or other):
+  # Create PR automatically
+  gh pr create --title "[PR_TITLE]" --body "[PR_BODY]" --base main
+```
+
+### PR Title Format:
+```
+Data: [Summary of changes]
+
+Examples:
+- "Data: Added 15 verified manufacturing companies"
+- "Data: Updated revenue estimates for 24 companies (ACRA lookup)"
+- "Data: Verified 10 healthcare companies with triggers"
+- "Data: Updated user parameters - removed SGX exclusion"
+```
+
+### PR Body Format:
+```markdown
+## Summary
+[Brief description of what was changed]
+
+## Changes Made
+- [Bullet point 1]
+- [Bullet point 2]
+- [Bullet point 3]
+
+## Data Quality
+- Companies added/updated: [N]
+- Triggers added: [N]
+- Confidence level: [HIGH/MEDIUM/LOW]
+
+## Review Notes
+[Any items that need developer attention]
+
+---
+🤖 Generated via Claude Code Web
+Auto-created PR for data review and merge to main
+```
+
+### Example PR Body:
+```markdown
+## Summary
+Verified 15 new manufacturing companies from E50 2024 list, including ACRA lookups for UEN and paid-up capital.
+
+## Changes Made
+- Added 15 companies to companies.csv with complete ACRA data
+- Added 42 expansion triggers to triggers.csv
+- Updated 3 companies with corrected revenue estimates
+
+## Data Quality
+- Companies added/updated: 15
+- Triggers added: 42
+- Confidence level: HIGH (all companies have UEN + LinkedIn verification)
+
+## Review Notes
+- 2 companies have holdco_flag=yes (may need revenue verification)
+- 1 company (Acme Manufacturing) has estimated revenue ~S$85M (close to S$100M threshold)
+
+---
+🤖 Generated via Claude Code Web
+Auto-created PR for data review and merge to main
+```
+
+### After PR Creation:
+```
+"✅ Changes committed and PR created!
+
+PR #[NUMBER]: [TITLE]
+Link: [PR_URL]
+
+The developer will review and merge your changes to main.
+You can continue working - the PR is ready for review."
+```
+
+**Business User Experience:**
+- Business user says: "Verify these 10 companies"
+- Claude updates CSVs, commits, creates PR automatically
+- Business user sees: "✅ Done! PR created for review"
+- NO git/GitHub knowledge required
+
+**Developer Experience:**
+- Receives PR notification
+- Reviews data changes in GitHub UI
+- Merges or requests changes
+- Clean audit trail of all data updates
+
 ## User Interaction Guidelines
 
 ### The user is a non-IT business user:

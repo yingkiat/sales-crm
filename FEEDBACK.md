@@ -1,0 +1,8 @@
+- Fix the csv file formatting in companies.csv
+- companies.csv, being the SOR, needs to add clear columns like size
+- I need to have a follow-up SOR. Where I identify those that are already tagged to someone else and cant be followed up. Or I have done the cold call and been rejected.
+- In the follow-up SOR, there will be some important details that I want to capture, like existing key bank, contact details, declared revenue, etc.
+- verify-leads.md needs a cross-check with ACRA
+- the git commits are going to side branch instead of main branch
+- paid-up capital is an important clue for the actual revenue determinant. especially as i understand that most do not have explicit revenue data.
+- accept both SGX and Catalist companies in user parameters
