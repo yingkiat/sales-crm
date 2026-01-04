@@ -16,7 +16,6 @@
 5. Technology & Professional Services
 
 **Exclusions (Hard Rules):**
-- SGX-listed companies
 - Obvious MNC subsidiaries (FedEx, DHL, Siemens, etc.)
 - Public disclosure of DBS as primary banker
 - Government agencies / Statutory boards

@@ -59,7 +59,7 @@ Located in `/.claude/skills/`:
 
 2. **verify-leads.md** - Verify existence + apply qualification filters
    - ✅ TESTED: Verified 24/25 companies (96% qualification rate)
-   - Applies 6 exclusion checks (SGX, MNC, DBS, revenue, sector, existence)
+   - Applies 5 exclusion checks (MNC, DBS, revenue, sector, existence)
    - Moves verified companies to companies.csv
 
 3. **generate-prospect-pack.md** - Create outreach materials for a specific company
@@ -112,7 +112,6 @@ Map triggers to these banking products:
 ## Key Business Rules
 
 ### Exclusion Criteria (Auto-drop)
-- SGX-listed companies
 - Obvious MNC subsidiaries
 - Public disclosure of DBS as banker
 - Holdco revenue obviously >S$100M
@@ -327,6 +326,22 @@ Use tables with relevant columns only (not all CSV columns)
 - Maintain consistent formatting
 - Validate data before writing (check required fields)
 - Use company_id as primary key for relationships
+
+**CRITICAL CSV VALIDATION (prevents data corruption):**
+- **companies.csv:** Every row must have exactly 17 commas (18 fields)
+- **engagement.csv:** Every row must have exactly 10 commas (11 fields)
+- **triggers.csv:** Every row must have exactly 9 commas (10 fields)
+- **candidates.csv:** Every row must have exactly 6 commas (7 fields)
+
+**When writing CSV rows with consecutive empty fields:**
+1. Count the number of fields between filled values
+2. For N empty fields, use exactly N commas (no more, no less)
+3. After writing, mentally verify total comma count matches expected
+4. Example: `field1,,,,field2` = 3 empty fields between field1 and field2 = 3 commas ✓
+
+**Common mistake to avoid:**
+- Writing `field1,,,,,field2` (4 commas) when you need `field1,,,,field2` (3 commas)
+- This creates phantom columns and breaks CSV parsers
 
 ### Creating Documents:
 - Use markdown for all generated documents

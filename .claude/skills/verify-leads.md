@@ -97,28 +97,7 @@ Look for linkedin.com/company/[name]
 **IF website OR LinkedIn found:**
 - Continue to 3b
 
-### 3b) SGX-Listed Check
-
-**Search:**
-```
-"[company_name] SGX listed"
-"[company_name] stock exchange"
-```
-
-**Look for:**
-- SGX listing code
-- "Listed on SGX"
-- Singapore Exchange announcements
-
-**IF SGX-listed:**
-- Mark as dropped
-- Reason: "SGX-listed company"
-- **SKIP to next candidate**
-
-**IF not listed:**
-- Continue to 3c
-
-### 3c) MNC Subsidiary Check
+### 3b) MNC Subsidiary Check
 
 **Look for patterns in website/search results:**
 ```
@@ -142,9 +121,9 @@ Look for linkedin.com/company/[name]
 - **SKIP to next candidate**
 
 **IF not MNC:**
-- Continue to 3d
+- Continue to 3c
 
-### 3d) Public DBS Mention Check
+### 3c) Public DBS Mention Check
 
 **Search:**
 ```
@@ -177,9 +156,9 @@ Look for linkedin.com/company/[name]
 - **SKIP to next candidate**
 
 **IF no DBS mention OR unclear:**
-- Continue to 3e
+- Continue to 3d
 
-### 3e) Holdco / Size Plausibility Check
+### 3d) Holdco / Size Plausibility Check
 
 **Look for signals:**
 
@@ -208,14 +187,14 @@ IF obvious signals (listed parent, disclosed revenue >100M, massive scale):
 IF some signals but unclear (e.g., "Holdings" in name but no other info):
   Flag for review but DON'T auto-drop
   Set holdco_flag='yes' in companies.csv
-  Continue to 3f (let user decide later)
+  Continue to 3e (let user decide later)
 
 IF no signals:
   Set holdco_flag='no'
-  Continue to 3f
+  Continue to 3e
 ```
 
-### 3f) Sector Validation
+### 3e) Sector Validation
 
 **Check if company's sector is in target sectors (from user-parameters.md):**
 - Logistics, Supply Chain & Trade
@@ -230,13 +209,13 @@ IF no signals:
 - **SKIP to next candidate**
 
 **IF sector in target list OR unknown:**
-- Continue to 3g
+- Continue to 3f
 
-### 3g) Extract Company Details (Passed All Checks)
+### 3f) Extract Company Details (Passed All Checks)
 
 **If candidate passed all exclusion checks:**
 
-**Step 3g-1: ACRA Lookup (UEN + Paid-up Capital)**
+**Step 3f-1: ACRA Lookup (UEN + Paid-up Capital)**
 
 Search for ACRA data using WebSearch:
 ```
@@ -262,7 +241,7 @@ IF no ACRA data found:
   Continue with other details
 ```
 
-**Step 3g-2: Extract from website/LinkedIn:**
+**Step 3f-2: Extract from website/LinkedIn:**
 ```
 - Legal name (if found, e.g., "[Name] Pte Ltd")
 - Website URL
@@ -298,6 +277,7 @@ IF no ACRA data found:
 - Empty fields must use empty string (consecutive commas: ,,)
 - NEVER skip columns - preserve column order exactly
 - UEN, paid_up_capital, and annual_revenue fields may be empty - must still include comma placeholders
+- **VALIDATION: Every row must have exactly 17 commas (18 fields total)**
 
 **New column order:**
 ```
@@ -306,19 +286,45 @@ company_id,legal_name,common_name,website,linkedin,uen,paid_up_capital,annual_re
 
 **Example with all fields:**
 ```csv
-ych-group,YCH Group Pte Ltd,YCH Group,https://www.ych.com,https://linkedin.com/company/ych-group,198003684Z,S$10.7M,~S$80M,Logistics,3PL/4PL,medium,HIGH,no,2025-12-30,never,verified,,
+ych-group,YCH Group Pte Ltd,YCH Group,https://www.ych.com,https://linkedin.com/company/ych-group,198003684Z,S$10.7M,~S$80M,Logistics,3PL/4PL,medium,HIGH,no,2025-12-30,never,verified,,Company notes here
 ```
+^ 17 commas = 18 fields ✓
 
 **Example with missing website/LinkedIn/UEN but with paid-up capital:**
 ```csv
 example-company,Example Company Pte Ltd,Example Company,,,200104742C,S$1M,~S$20M,Manufacturing,Electronics,medium,HIGH,no,2025-12-30,never,verified,,Award winner
 ```
+^ Count after common_name: 3 empty fields (website, linkedin, uen) = 3 commas, then paid_up_capital = 17 commas total ✓
 
 **Example with all financial fields empty:**
 ```csv
 new-company,New Company Pte Ltd,New Company,https://example.com,,,,~S$15M,Technology,SaaS,medium,MEDIUM,no,2025-12-30,never,verified,,
 ```
-^ Notice: `New Company,https://example.com,,,,~S$15M` = has website, empty linkedin, empty UEN, empty paid_up_capital, then annual_revenue estimate
+^ Count after common_name: website (filled), then 3 empty fields (linkedin, uen, paid_up_capital) = 3 commas before annual_revenue = 17 commas total ✓
+
+**CSV Row Construction Checklist:**
+Before writing each row, verify the structure:
+1. company_id (field 1)
+2. legal_name (field 2)
+3. common_name (field 3)
+4. website (field 4) - may be empty
+5. linkedin (field 5) - may be empty
+6. uen (field 6) - may be empty
+7. paid_up_capital (field 7) - may be empty
+8. annual_revenue (field 8) - may be empty
+9. sector (field 9)
+10. industry (field 10)
+11. priority (field 11)
+12. confidence (field 12)
+13. holdco_flag (field 13)
+14. date_verified (field 14)
+15. last_enriched (field 15)
+16. current_stage (field 16)
+17. assigned_to (field 17) - usually empty
+18. notes (field 18) - may be empty
+
+**Post-Write Validation:**
+After writing each row, mentally count: should have exactly 17 commas
 
 **Update candidates.csv:**
 ```
@@ -330,7 +336,7 @@ Change status from 'pending' to 'verified'
 "✓ [Company Name] verified → moved to companies.csv"
 ```
 
-### 3h) If Dropped (Failed Any Check)
+### 3g) If Dropped (Failed Any Check)
 
 **Update candidates.csv:**
 ```
@@ -360,11 +366,10 @@ Add drop_reason = [reason from checks above]
 ```
 Dropped candidates ([Y] total):
 - [A] No website/LinkedIn found
-- [B] SGX-listed companies
-- [C] MNC subsidiaries
-- [D] Public DBS banker mentions
-- [E] Holdco revenue >S$100M
-- [F] Out of target sectors
+- [B] MNC subsidiaries
+- [C] Public DBS banker mentions
+- [D] Holdco revenue >S$100M
+- [E] Out of target sectors
 ```
 
 **Report format:**
@@ -376,11 +381,10 @@ Verification complete: [N] candidates processed
 
 ✗ [Y] companies dropped:
   - [A] No website/LinkedIn: [names]
-  - [B] SGX-listed: [names]
-  - [C] MNC subsidiaries: [names]
-  - [D] Public DBS mentions: [names]
-  - [E] Holdco >S$100M: [names]
-  - [F] Out of target sectors: [names]
+  - [B] MNC subsidiaries: [names]
+  - [C] Public DBS mentions: [names]
+  - [D] Holdco >S$100M: [names]
+  - [E] Out of target sectors: [names]
 
 [X] verified companies ready for enrichment or outreach.
 
@@ -480,7 +484,6 @@ LOW: Minimal public information, sparse data
 
 Before considering a candidate "verified":
 - [ ] Website OR LinkedIn exists
-- [ ] NOT SGX-listed
 - [ ] NOT MNC subsidiary
 - [ ] NO public DBS banker mention
 - [ ] Holdco plausibility pass (or flagged for review)

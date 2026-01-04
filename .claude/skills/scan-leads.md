@@ -13,7 +13,7 @@ This skill has TWO modes:
 Read /data/user-parameters.md
 Extract:
 - Target geography, size, sectors
-- Exclusions (SGX, MNC, public DBS, holdco)
+- Exclusions (MNC, public DBS, holdco)
 - Priority scoring criteria
 ```
 
@@ -62,12 +62,7 @@ Search: "[company name] news 2024 2025"
 
 **Check each exclusion:**
 
-a) **SGX-listed check:**
-   - Search: "[company] SGX listed"
-   - IF listed on SGX → Report: "Found but excluded: SGX-listed company"
-   - STOP
-
-b) **MNC subsidiary check:**
+a) **MNC subsidiary check:**
    - Look for patterns in search results:
      - "[Company] subsidiary of [Parent MNC]"
      - Global brand names (FedEx, DHL, UPS, Siemens, ABB, etc.)
@@ -75,13 +70,13 @@ b) **MNC subsidiary check:**
    - IF MNC subsidiary → Report: "Found but excluded: MNC subsidiary of [Parent]"
    - STOP
 
-c) **Public DBS mention check:**
+b) **Public DBS mention check:**
    - Search: "[company] DBS bank"
    - Look for: "banking partner DBS", "facility from DBS", "financed by DBS"
    - IF found in press release/credible article → Report: "Found but excluded: Public DBS banker mention"
    - STOP
 
-d) **Holdco/size check:**
+c) **Holdco/size check:**
    - Look for: "Holdings", "Group" in legal name
    - Check for: listed parent, wide regional operations (>5 countries), >1000 employees
    - IF obviously large (>S$100M likely) → Report: "Found but excluded: Holdco revenue likely >S$100M"
@@ -203,6 +198,7 @@ Add [Company] to candidates?
 candidate_id,company_name,source,initial_trigger,date_added,status,drop_reason
 CAND###,[company name],user scan,[top trigger description],2025-12-30,pending,
 ```
+^ **VALIDATION:** Must have exactly 6 commas (7 fields total) - drop_reason is empty but comma still required
 
 **Report:**
 ```
@@ -254,7 +250,7 @@ Next step: Verify this candidate to move to companies.csv?
 **Apply filters:**
 - Sector matches (if specified)
 - Trigger type matches (if specified)
-- Apply exclusions from user-parameters.md (check notes column for SGX/MNC mentions)
+- Apply exclusions from user-parameters.md (check notes column for MNC mentions)
 
 **Count matches found**
 
@@ -279,7 +275,7 @@ Example: "logistics Singapore expansion 2024 2025"
 - For each company name:
   - Quick existence check (does website or LinkedIn exist?)
   - Quick trigger check (does it have the requested trigger type?)
-  - Apply exclusions (SGX, MNC, public DBS)
+  - Apply exclusions (MNC, public DBS)
   - If passes → add to candidate list
 
 **IMPORTANT:**
@@ -339,6 +335,7 @@ Add all [N] companies to candidates? (yes/all/select/no)
 ```csv
 CAND###,[company name],[source (research doc / web search)],[top trigger],2025-12-30,pending,
 ```
+^ **VALIDATION:** Must have exactly 6 commas (7 fields total)
 
 **Report:**
 ```
@@ -406,9 +403,9 @@ Try again with different criteria?"
 **IF all broad search results excluded:**
 ```
 "Found [N] companies but all excluded:
-- [X] SGX-listed
-- [Y] MNC subsidiaries
-- [Z] Public DBS mentions
+- [X] MNC subsidiaries
+- [Y] Public DBS mentions
+- [Z] Holdco >S$100M
 
 No companies passed filters. Try different sector or criteria?"
 ```
