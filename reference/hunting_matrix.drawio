@@ -1,0 +1,73 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
+  <diagram name="Page-1" id="hunting-matrix">
+    <mxGraphModel dx="2066" dy="1201" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WTuJNFyepztbski-L2GG-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;" value="" vertex="1">
+          <mxGeometry height="530" width="1310" x="30" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="h0" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2c3e50;strokeColor=#2c3e50;fontColor=#FFFFFF;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="Human-AI&amp;nbsp;&lt;div&gt;Acceleration&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="200" x="50" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3498db;strokeColor=#2980b9;fontColor=#FFFFFF;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;span&gt;Track 1&lt;/span&gt;&lt;br&gt;New-to-Bank&lt;br&gt;(NTB)" vertex="1">
+          <mxGeometry height="80" width="250" x="270" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3498db;strokeColor=#2980b9;fontColor=#FFFFFF;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;span&gt;Track 2&lt;/span&gt;&lt;br&gt;Dormant&lt;br&gt;Accounts" vertex="1">
+          <mxGeometry height="80" width="250" x="540" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3498db;strokeColor=#2980b9;fontColor=#FFFFFF;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;span&gt;Track 3&lt;/span&gt;&lt;br&gt;Strategic&lt;br&gt;Accounts" vertex="1">
+          <mxGeometry height="80" width="250" x="810" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3498db;strokeColor=#2980b9;fontColor=#FFFFFF;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;span&gt;Track 4&lt;/span&gt;&lt;br&gt;Cash Management&lt;br&gt;Focus" vertex="1">
+          <mxGeometry height="80" width="250" x="1080" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e74c3c;strokeColor=#c0392b;fontColor=#FFFFFF;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Signal-to-Prospect&lt;br&gt;Engine&lt;/b&gt;" vertex="1">
+          <mxGeometry height="120" width="200" x="50" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Scan markets for high-intent prospects" vertex="1">
+          <mxGeometry height="120" width="250" x="270" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Scan for reactivation triggers" vertex="1">
+          <mxGeometry height="120" width="250" x="540" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Monitor wallet expansion triggers" vertex="1">
+          <mxGeometry height="120" width="250" x="810" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Scan for cash mgmt triggers (multi-entity ops)" vertex="1">
+          <mxGeometry height="120" width="250" x="1080" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e74c3c;strokeColor=#c0392b;fontColor=#FFFFFF;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Engagement&lt;br&gt;Accelerator&lt;/b&gt;" vertex="1">
+          <mxGeometry height="120" width="200" x="50" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="c21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Trigger-based outreach + prospect packs" vertex="1">
+          <mxGeometry height="120" width="250" x="270" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="c22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Re-engagement outreach (personalized)" vertex="1">
+          <mxGeometry height="120" width="250" x="540" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="c23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Relationship continuity + meeting prep" vertex="1">
+          <mxGeometry height="120" width="250" x="810" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="c24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Targeted cash mgmt outreach (not generic lending)" vertex="1">
+          <mxGeometry height="120" width="250" x="1080" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e74c3c;strokeColor=#c0392b;fontColor=#FFFFFF;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Learning&lt;br&gt;Loop&lt;/b&gt;" vertex="1">
+          <mxGeometry height="120" width="200" x="50" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="c31" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Refine triggers, improve NTB conversion" vertex="1">
+          <mxGeometry height="120" width="250" x="270" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="c32" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Learn what reactivates dormant accounts" vertex="1">
+          <mxGeometry height="120" width="250" x="540" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="c33" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Learn what drives wallet share growth" vertex="1">
+          <mxGeometry height="120" width="250" x="810" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="c34" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecf0f1;strokeColor=#bdc3c7;fontColor=#2c3e50;fontSize=13;align=center;verticalAlign=middle;" value="Learn which triggers drive CM adoption" vertex="1">
+          <mxGeometry height="120" width="250" x="1080" y="430" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

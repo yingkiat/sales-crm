@@ -1,5 +1,27 @@
 # CRM Business Parameters
 
+## Hunting Strategy: 4-Track Approach
+
+**Track 1: New-to-Bank (NTB)**
+- Target industries: Logistics, Tech, Precision Engineering, Healthcare, Marine
+- Focus: Greenfield acquisition, capture wallet before competitors
+- Products: Full suite (lending, trade finance, working capital)
+
+**Track 2: Dormant Accounts**
+- Target: Existing DBS customers with inactive/minimal activity
+- Focus: Reactivation plays, lower barrier than cold outreach
+- Products: Re-engagement based on new triggers
+
+**Track 3: Strategic Accounts (Wallet Growth)**
+- Target: 10 accounts brought over with strong wallet expansion potential
+- Focus: Deep wallet share growth (cross-sell, upsell, share-of-wallet)
+- Products: Opportunistic based on expansion moments
+
+**Track 4: Cash Management Focus (Product-Led)**
+- Target: Companies with operational complexity (multi-entity, cross-border, high transaction volumes)
+- Focus: Fee income via cash management solutions
+- Products: Cash mgmt, multi-currency accounts, FX hedging (non-credit products)
+
 ## Target Profile
 
 **Geography:** Singapore (operating entities only)
@@ -7,6 +29,7 @@
 **Company Size:**
 - Revenue: S$30M - S$100M (holdco aggregated)
 - Employee range: 50-500 employees (proxy indicator)
+- **Note:** Size guidelines are flexible based on product opportunity (e.g., cash mgmt doesn't require size constraints)
 
 **Target Sectors (Priority Order):**
 1. Logistics, Supply Chain & Trade
@@ -15,11 +38,29 @@
 4. F&B, Retail & Consumer
 5. Technology & Professional Services
 
-**Exclusions (Hard Rules):**
-- Obvious MNC subsidiaries (FedEx, DHL, Siemens, etc.)
-- Public disclosure of DBS as primary banker
-- Government agencies / Statutory boards
-- Holdco revenue obviously >S$100M
+## Exclusions (Guidelines - Context-Dependent)
+
+**These are guidelines, not hard rules. Consider the hunting track and product opportunity:**
+
+**MNC Subsidiaries:**
+- **Traditional exclusion:** Obvious MNC subsidiaries (FedEx, DHL, Siemens) for credit products
+- **Exception:** MNC subsidiaries may qualify for non-credit products (cash management, FX, treasury)
+- **Rationale:** Cash mgmt/FX opportunities don't require credit evaluation - product fit matters more than ownership structure
+- **Example:** UMW Equipment (Sime Darby subsidiary) qualified for cash management opportunity
+
+**Ceased Operations / Pivoting Entities:**
+- **Traditional exclusion:** Companies that have closed operations
+- **Exception:** Entities still ACRA-registered and pivoting to new brand/business model
+- **Rationale:** Transition periods create cash mgmt needs (property holdings, restructuring, new ventures)
+- **Example:** Gong Cha Singapore (ceased bubble tea ops, pivoting) qualified for property/cash mgmt opportunity
+
+**Other Exclusions:**
+- Government agencies / Statutory boards (applies to all tracks)
+- Holdco revenue obviously >S$100M (flexible for Track 4 - cash mgmt)
+
+**Note on Existing DBS Relationships:**
+- Existing DBS customers are NOT excluded - they're explicitly targeted in Track 2 (Dormant) and Track 3 (Strategic)
+- Even for Track 1 (NTB), a partial DBS relationship doesn't exclude wallet expansion opportunities
 
 ## Priority Scoring Criteria
 
