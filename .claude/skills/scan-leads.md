@@ -230,65 +230,76 @@ Next step: Verify this candidate to move to companies.csv?
 
 **Tell user upfront:**
 ```
-"Searching for [count] [sector] companies [with trigger_type triggers]..."
+"Searching for [count] [sector] companies [with trigger_type triggers]...
+(Scanning external sources for NEW companies not already in system)"
 ```
 
-### Step 2: Search deep_research_leads.md FIRST
+### Step 2: Check Existing System First (Deduplication)
 
-**Read:** /reference/deep_research_leads.md
+**CRITICAL - Read existing data to avoid duplicates:**
+```
+Read /data/companies.csv → extract all company names
+Read /data/candidates.csv → extract all company names
+Combine into exclusion list
+```
 
-**Parse the markdown tables:**
-- Find section for target sector (e.g., "## SECTOR 2: LOGISTICS, SUPPLY CHAIN & TRADE")
-- Extract companies from tables
-- For each company, extract:
-  - Company name
-  - Sector
-  - Triggers from "Growth Signals (Last 18 Months)" column
-  - Banking needs
-  - Priority/confidence
+**This list tells you which companies to SKIP during web search**
 
-**Apply filters:**
-- Sector matches (if specified)
-- Trigger type matches (if specified)
-- Apply exclusions from user-parameters.md (check notes column for MNC mentions)
+### Step 3: Web Search for NEW Companies
 
-**Count matches found**
+**IMPORTANT:** The whole point of scanning is finding NEW companies NOT in the system yet.
 
-### Step 3: Supplement with Web Search (if needed)
+**Web search strategies (use multiple):**
 
-**IF matches from research doc >= count:**
-- Use only research doc results
-- SKIP web search
-
-**IF matches from research doc < count:**
-- Need to supplement with web search
-- Calculate: need [count - matches_found] more companies
-
-**Web search query:**
+**A) Sector-specific news search:**
 ```
 "[sector] Singapore [trigger_type] 2024 2025"
-Example: "logistics Singapore expansion 2024 2025"
+"[sector] Singapore expansion 2024"
+"[sector] Singapore tender award 2025"
+
+Examples:
+- "logistics Singapore expansion 2024 2025"
+- "manufacturing Singapore tender award 2024"
+- "healthcare Singapore new facility 2025"
+```
+
+**B) Specific trigger searches:**
+```
+"Singapore [sector] opened new facility 2024"
+"Singapore [sector] awarded contract 2025"
+"Singapore [sector] acquisition merger 2024"
+```
+
+**C) Award/recognition searches:**
+```
+"E50 Singapore [sector] 2024"
+"Singapore Enterprise Awards [sector]"
+"SME awards Singapore [sector] 2024"
 ```
 
 **From search results:**
-- Extract company names (look for "Pte Ltd", "Private Limited")
-- For each company name:
-  - Quick existence check (does website or LinkedIn exist?)
-  - Quick trigger check (does it have the requested trigger type?)
-  - Apply exclusions (MNC, public DBS)
-  - If passes → add to candidate list
+- Extract company names (look for "Pte Ltd", "Private Limited", "Pte. Ltd.")
+- For EACH company name found:
+  - **FIRST:** Check if in exclusion list (companies.csv or candidates.csv)
+  - **IF already in system → SKIP immediately**
+  - **IF new company:**
+    - Quick existence check (does website or LinkedIn exist?)
+    - Quick trigger check (does it have relevant triggers?)
+    - Apply exclusions (MNC, public DBS, holdco >S$100M)
+    - If passes → add to candidate list
 
-**IMPORTANT:**
-- Check against existing companies.csv and candidates.csv
-- SKIP companies already in system (avoid duplicates)
+**Target:** Find [count] NEW companies not already in system
 
-### Step 4: Combine Results
+**Continue searching until you have [count] qualified NEW companies**
 
-**Merge:**
-- Companies from deep_research_leads.md
-- Companies from web search (if any)
+### Step 4: Compile Results
 
-**Remove duplicates** (same company name)
+**Review final candidate list:**
+- All companies should be NEW (not in companies.csv or candidates.csv)
+- All should pass exclusion filters
+- All should have at least 1 relevant trigger found
+
+**Remove any duplicates** (same company name appears multiple times in search)
 
 **Limit to requested count** (or slightly more if many good matches)
 
@@ -296,14 +307,14 @@ Example: "logistics Singapore expansion 2024 2025"
 
 **Format:**
 ```
-Search complete: Found [N] [sector] companies [with trigger_type triggers]
+Search complete: Found [N] NEW [sector] companies [with trigger_type triggers]
 
 Results:
-1. [Company Name] (source: research doc / web)
+1. [Company Name]
    - Triggers: [list]
    - Priority suggestion: [based on triggers]
 
-2. [Company Name] (source: research doc / web)
+2. [Company Name]
    - Triggers: [list]
    - Priority suggestion: [based on triggers]
 
@@ -386,16 +397,16 @@ Add to candidates anyway? (yes/no)"
 
 **IF broad search finds 0 results:**
 ```
-"Search found 0 companies matching criteria.
+"Search found 0 NEW companies matching criteria.
 
 Checked:
-- deep_research_leads.md: [N] [sector] companies, [M] excluded
-- Web search: no additional matches found
+- Web search: no new companies found (all results either already in system or excluded)
 
 Suggestions:
 - Broaden criteria (remove trigger type filter)
 - Try different sector
-- Reduce count (find 5 instead of 20)
+- Try different trigger types
+- Search with different keywords
 
 Try again with different criteria?"
 ```
@@ -437,14 +448,15 @@ No companies passed filters. Try different sector or criteria?"
 - Use target sectors from user-parameters.md
 - If company doesn't fit any sector clearly, ask user
 
-**Deep research leads parsing:**
-- Parse markdown tables carefully (company name is in first column)
-- Triggers are in "Growth Signals" column (may be comma-separated)
-- Banking needs are in "Banking Needs" column
-
 **Duplicate detection:**
-- Always check companies.csv and candidates.csv before adding
+- Always check companies.csv and candidates.csv before web search
+- Build exclusion list FIRST to avoid wasting time on companies already in system
 - Ask user if similar name found: "Is this the same as [existing company]?"
+
+**Search thoroughness:**
+- Use multiple search strategies (news, awards, sector-specific)
+- Try different keyword combinations if initial searches yield few results
+- Aim for quality over quantity (better to find 7 good companies than 10 mediocre ones)
 
 ---
 

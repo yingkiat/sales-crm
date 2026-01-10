@@ -8,12 +8,12 @@
 - Products: Full suite (lending, trade finance, working capital)
 
 **Track 2: Dormant Accounts**
-- Target: Existing DBS customers with inactive/minimal activity
+- Target: Existing customers with inactive/minimal activity
 - Focus: Reactivation plays, lower barrier than cold outreach
 - Products: Re-engagement based on new triggers
 
 **Track 3: Strategic Accounts (Wallet Growth)**
-- Target: 10 accounts brought over with strong wallet expansion potential
+- Target: Existing portfolio accounts with strong wallet expansion potential
 - Focus: Deep wallet share growth (cross-sell, upsell, share-of-wallet)
 - Products: Opportunistic based on expansion moments
 
@@ -58,14 +58,14 @@
 - Government agencies / Statutory boards (applies to all tracks)
 - Holdco revenue obviously >S$100M (flexible for Track 4 - cash mgmt)
 
-**Note on Existing DBS Relationships:**
-- Existing DBS customers are NOT excluded - they're explicitly targeted in Track 2 (Dormant) and Track 3 (Strategic)
-- Even for Track 1 (NTB), a partial DBS relationship doesn't exclude wallet expansion opportunities
+**Note on Existing Banking Relationships:**
+- Existing customers are NOT excluded - they're explicitly targeted in Track 2 (Dormant) and Track 3 (Strategic)
+- Even for Track 1 (NTB), a partial banking relationship doesn't exclude wallet expansion opportunities
 
 ## Priority Scoring Criteria
 
 **High Priority:**
-- New to bank (no existing DBS relationship)
+- New to bank (no existing banking relationship)
 - Company size close to S$40-100M revenue range
 
 **Low Priority:**
@@ -92,6 +92,40 @@
 
 **Note:** This is for user reference. Skills capture triggers but don't assign strength ratings automatically.
 
+## Current Banker Identification
+
+**IMPORTANT: Extract company's existing banking relationships from news**
+
+When researching companies, actively search for mentions of their current banker:
+
+**Search patterns:**
+- "[company name] facility [bank name]"
+- "[company name] financing [bank name]"
+- "[company name] loan [bank name]"
+- "[company name] banking partner"
+- "[company name] trade finance"
+
+**Look for indicators in news articles:**
+- "Secured S$XXM facility from [Bank Name]"
+- "Partnership with [Bank Name] for trade finance"
+- "Refinanced with [Bank Name]"
+- "Syndicated loan led by [Bank Name]"
+- "[Bank Name] provided working capital"
+
+**Common Singapore banks to watch for:**
+- OCBC, UOB, Standard Chartered, HSBC, Maybank, CIMB, ANZ, Citibank
+
+**Record in companies.csv:**
+- If banker mentioned in news → record in appropriate field
+- If no banker mentioned → leave blank (not "unknown")
+- If multiple banks mentioned → record primary/main banker only
+
+**Strategic value:**
+- Knowing current banker helps determine Track assignment
+- No banking relationship mentioned = likely Track 1 (NTB) candidate
+- Competitor bank mentioned = opportunity for wallet capture
+- Existing relationship = Track 2 or Track 3 play
+
 ## Banking Products Focus
 
 **Primary Products:**
@@ -117,7 +151,7 @@
 
 **Call-to-Action:** Low commitment (15-20 min intro call)
 
-**Key Message:** DBS understands SME growth challenges
+**Key Message:** Understanding SME growth challenges, providing tailored banking solutions
 
 **Recipient Name:** Use actual name if available, generic fallback ("Dear CEO") if not
 

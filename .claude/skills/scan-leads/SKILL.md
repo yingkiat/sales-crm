@@ -19,8 +19,9 @@ This skill has TWO modes:
 Read /data/user-parameters.md
 Extract:
 - Target geography, size, sectors
-- Exclusions (MNC, public DBS, holdco)
+- Exclusions (MNC, holdco)
 - Priority scoring criteria
+- Current banker identification strategy
 ```
 
 ## Mode Detection
@@ -76,11 +77,16 @@ a) **MNC subsidiary check:**
    - IF MNC subsidiary → Report: "Found but excluded: MNC subsidiary of [Parent]"
    - STOP
 
-b) **Public DBS mention check:**
-   - Search: "[company] DBS bank"
-   - Look for: "banking partner DBS", "facility from DBS", "financed by DBS"
-   - IF found in press release/credible article → Report: "Found but excluded: Public DBS banker mention"
-   - STOP
+b) **Current banker identification:**
+   - Search: "[company] facility [bank]"
+   - Search: "[company] financing [bank]"
+   - Search: "[company] loan [bank]"
+   - Look for: "banking partner [Bank]", "facility from [Bank]", "financed by [Bank]", "syndicated loan led by [Bank]"
+   - Common Singapore banks: OCBC, UOB, DBS, Standard Chartered, HSBC, Maybank, CIMB, ANZ, Citibank
+   - IF banker mentioned → Record for later (include in candidate notes)
+   - IF no banker mentioned → Leave blank (not "unknown")
+   - **NOTE:** This is intelligence gathering, NOT an exclusion check
+   - Continue to next check
 
 c) **Holdco/size check:**
    - Look for: "Holdings", "Group" in legal name
@@ -88,7 +94,7 @@ c) **Holdco/size check:**
    - IF obviously large (>S$100M likely) → Report: "Found but excluded: Holdco revenue likely >S$100M"
    - IF some signals but unclear → Flag for user review (don't auto-exclude)
 
-**IF passed all exclusions:**
+**IF passed exclusions (a and c):**
 - Continue to Step 4
 
 ### Step 4: Extract Triggers
@@ -177,6 +183,7 @@ What priority should I assign? (high/medium/low)"
 - Website: [URL]
 - LinkedIn: [URL]
 - Sector: [sector] - [industry]
+- Current banker: [Bank name if found, or "Not mentioned in news"]
 
 Triggers Found: [N]
 1. [Category] - [Description] ([Date])
@@ -281,7 +288,8 @@ Example: "logistics Singapore expansion 2024 2025"
 - For each company name:
   - Quick existence check (does website or LinkedIn exist?)
   - Quick trigger check (does it have the requested trigger type?)
-  - Apply exclusions (MNC, public DBS)
+  - Apply exclusions (MNC, holdco >S$100M)
+  - Check for current banker (record if found)
   - If passes → add to candidate list
 
 **IMPORTANT:**
@@ -410,8 +418,7 @@ Try again with different criteria?"
 ```
 "Found [N] companies but all excluded:
 - [X] MNC subsidiaries
-- [Y] Public DBS mentions
-- [Z] Holdco >S$100M
+- [Y] Holdco >S$100M
 
 No companies passed filters. Try different sector or criteria?"
 ```

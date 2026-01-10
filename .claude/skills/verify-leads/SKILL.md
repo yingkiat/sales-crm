@@ -12,8 +12,9 @@ This skill moves candidates from **pending** status to either:
 ```
 Read /data/user-parameters.md
 Extract:
-- Exclusions (SGX, MNC, public DBS, holdco, size)
+- Exclusions (SGX, MNC, holdco, size)
 - Target sectors
+- Current banker identification strategy
 ```
 
 ---
@@ -123,40 +124,44 @@ Look for linkedin.com/company/[name]
 **IF not MNC:**
 - Continue to 3c
 
-### 3c) Public DBS Mention Check
+### 3c) Current Banker Identification
 
-**Search:**
+**Search for banking relationships:**
 ```
-"[company_name] DBS bank"
+"[company_name] facility [bank]"
+"[company_name] financing [bank]"
+"[company_name] loan [bank]"
 "[company_name] banking partner"
 ```
 
-**Look for explicit mentions in:**
+**Look for mentions in:**
 - Press releases
 - News articles (Business Times, Straits Times)
 - Company announcements
 
-**Key phrases:**
+**Key phrases to identify current banker:**
 ```
-- "banking partner DBS"
-- "facility from DBS"
-- "financed by DBS"
-- "DBS provided loan"
-- "supported by DBS Bank"
+- "secured S$XXM facility from [Bank Name]"
+- "banking partner [Bank]"
+- "facility from [Bank]"
+- "financed by [Bank]"
+- "refinanced with [Bank]"
+- "syndicated loan led by [Bank]"
+- "[Bank] provided working capital"
 ```
+
+**Common Singapore banks:**
+- OCBC, UOB, DBS, Standard Chartered, HSBC, Maybank, CIMB, ANZ, Citibank
+
+**Record findings:**
+- IF banker mentioned → Note the bank name (will be added to companies.csv)
+- IF no banker mentioned → Leave blank (not "unknown")
+- IF multiple banks mentioned → Record primary/lead banker only
 
 **IMPORTANT:**
-- Must be PUBLIC disclosure (article, press release)
-- Don't exclude based on speculation or rumors
-- If mentioned as one of many banks (not exclusive) → maybe OK, ask user
-
-**IF clear public DBS mention:**
-- Mark as dropped
-- Reason: "Public DBS banker mention"
-- **SKIP to next candidate**
-
-**IF no DBS mention OR unclear:**
-- Continue to 3d
+- This is intelligence gathering, NOT an exclusion check
+- Record banker information for strategic value
+- Continue to 3d regardless of findings
 
 ### 3d) Holdco / Size Plausibility Check
 
@@ -367,9 +372,8 @@ Add drop_reason = [reason from checks above]
 Dropped candidates ([Y] total):
 - [A] No website/LinkedIn found
 - [B] MNC subsidiaries
-- [C] Public DBS banker mentions
-- [D] Holdco revenue >S$100M
-- [E] Out of target sectors
+- [C] Holdco revenue >S$100M
+- [D] Out of target sectors
 ```
 
 **Report format:**
@@ -382,9 +386,8 @@ Verification complete: [N] candidates processed
 ✗ [Y] companies dropped:
   - [A] No website/LinkedIn: [names]
   - [B] MNC subsidiaries: [names]
-  - [C] Public DBS mentions: [names]
-  - [D] Holdco >S$100M: [names]
-  - [E] Out of target sectors: [names]
+  - [C] Holdco >S$100M: [names]
+  - [D] Out of target sectors: [names]
 
 [X] verified companies ready for enrichment or outreach.
 
@@ -485,7 +488,7 @@ LOW: Minimal public information, sparse data
 Before considering a candidate "verified":
 - [ ] Website OR LinkedIn exists
 - [ ] NOT MNC subsidiary
-- [ ] NO public DBS banker mention
+- [ ] Current banker identified (if mentioned in news)
 - [ ] Holdco plausibility pass (or flagged for review)
 - [ ] Sector in target list (or user-approved)
 - [ ] company_id generated (unique, kebab-case)

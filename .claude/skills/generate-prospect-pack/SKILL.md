@@ -248,7 +248,7 @@ Banking needs selected (3):
 
 **Format:**
 ```
-"Given [trigger context], I thought it would be valuable to explore how DBS can support your [next phase/continued/ongoing] [growth/expansion/operations] with:
+"Given [trigger context], I thought it would be valuable to explore how [Your Bank] can support your [next phase/continued/ongoing] [growth/expansion/operations] with:
 
 • [Banking Product 1] - [Specific value proposition tied to trigger]
 • [Banking Product 2] - [Specific value proposition tied to trigger]
@@ -257,7 +257,7 @@ Banking needs selected (3):
 
 **Example:**
 ```
-"Given the scale of your facility development across APAC, I thought it would be valuable to explore how DBS can support your next phase of growth with:
+"Given the scale of your facility development across APAC, I thought it would be valuable to explore how [Your Bank] can support your next phase of growth with:
 
 • Facility financing - Structured solutions for large-scale warehouse and distribution center development
 • Regional expansion loans - Flexible financing for your Malaysia and Vietnam hubs
@@ -294,7 +294,7 @@ Banking needs selected (3):
 
 **Format:**
 ```
-"Hi [Name], I'm [Banker Name] from DBS SME Banking. I've been following [Company]'s recent [trigger 1] and [trigger 2]. I thought it would be valuable to have a brief conversation about how we can support your [growth/expansion/operations]. Do you have 15 minutes now or would another time work better?"
+"Hi [Name], I'm [Banker Name] from [Your Bank] SME Banking. I've been following [Company]'s recent [trigger 1] and [trigger 2]. I thought it would be valuable to have a brief conversation about how we can support your [growth/expansion/operations]. Do you have 15 minutes now or would another time work better?"
 ```
 
 **Adjust tone:**
@@ -578,7 +578,7 @@ Then save file
 - Don't go below 100 words (too brief, seems generic)
 
 **Key message (from user-parameters.md):**
-- "DBS understands SME growth challenges"
+- "[Your Bank] understands SME growth challenges"
 - Position as partner, not just vendor
 - Focus on growth support, not product push
 
