@@ -328,20 +328,52 @@ Use tables with relevant columns only (not all CSV columns)
 - Use company_id as primary key for relationships
 
 **CRITICAL CSV VALIDATION (prevents data corruption):**
-- **companies.csv:** Every row must have exactly 17 commas (18 fields)
-- **engagement.csv:** Every row must have exactly 10 commas (11 fields)
-- **triggers.csv:** Every row must have exactly 9 commas (10 fields)
-- **candidates.csv:** Every row must have exactly 6 commas (7 fields)
 
-**When writing CSV rows with consecutive empty fields:**
-1. Count the number of fields between filled values
-2. For N empty fields, use exactly N commas (no more, no less)
-3. After writing, mentally verify total comma count matches expected
-4. Example: `field1,,,,field2` = 3 empty fields between field1 and field2 = 3 commas ✓
+**Required comma counts per file:**
+- **companies.csv:** Exactly 17 commas (18 fields)
+- **engagement.csv:** Exactly 10 commas (11 fields)
+- **triggers.csv:** Exactly 9 commas (10 fields)
+- **candidates.csv:** Exactly 6 commas (7 fields)
 
-**Common mistake to avoid:**
-- Writing `field1,,,,,field2` (4 commas) when you need `field1,,,,field2` (3 commas)
-- This creates phantom columns and breaks CSV parsers
+**MANDATORY validation process BEFORE writing any CSV row:**
+
+1. **Count total fields in header** (run this check EVERY time before writing)
+   - Read the header line
+   - Count total commas in header = N
+   - Total fields = N + 1
+
+2. **Build your data row carefully**
+   - Start from field 1, work sequentially to the last field
+   - For EACH field position, either add data OR leave empty
+   - Empty fields still need their comma separator
+
+3. **Verify comma count BEFORE writing**
+   - Count commas in your constructed row
+   - If comma count ≠ header comma count, DO NOT WRITE
+   - Fix the row and recount
+
+4. **Common error patterns:**
+   - ❌ `field1,field2,field3,value` (only 3 commas when you need 10)
+   - ✓ `field1,field2,field3,,,,,,,value` (10 commas = 11 fields)
+   - The number of empty fields between field3 and value matters!
+
+**Example for engagement.csv (needs 10 commas):**
+```
+Header: company_id,engagement_status,last_contact_date,contact_name,contact_phone,contact_email,existing_banker,rejection_reason,next_action,next_action_date,engagement_notes
+        1          2                 3                 4            5             6              7               8                9           10               11
+
+Correct: ees-freight,contacted,2026-01-12,,,,,,Follow up,2026-01-19,Initial call completed
+         1          2         3          4,5,6,7,8,9        10          11
+         Commas:    1,        2,         3,4,5,6,7,8,       9,          10 ✓
+
+Wrong:   ees-freight,contacted,2026-01-12,,,,,Follow up,2026-01-19,Initial call completed
+         Only 9 commas ❌ Missing 1 comma before "Follow up"
+```
+
+**If you make a CSV error:**
+- The system will fail to parse the file
+- User will notify you immediately
+- You must fix ALL affected rows and recommit
 
 ### Creating Documents:
 - Use markdown for all generated documents
