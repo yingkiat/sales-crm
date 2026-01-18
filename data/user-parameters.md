@@ -73,6 +73,87 @@
 
 **Note:** Skills do NOT auto-calculate priority. User assigns priority based on these criteria during data entry.
 
+## Active Market Opportunities (Macro Events)
+
+**Track time-sensitive market disruptions that create acquisition opportunities**
+
+### Current Active Opportunities
+
+#### 1. HSBC SME Exit (Q1 2026) - HIGH PRIORITY
+- **Event:** HSBC exiting Singapore SME banking segment
+- **Target segment:** Companies with US$10-50M annual turnover (~S$13.5M-67.5M)
+- **Overlap with our focus:** Direct overlap with S$30-67M range (sweet spot for acquisition)
+- **Opportunity type:** Pre-qualified prospects forced to switch banks
+- **Timeline:** Q1 2026 (act now before competitors)
+- **Strategic value:**
+  - Customers already banked = creditworthy, proven track record
+  - Forced switching moment = low competitive friction
+  - HSBC not defending = easier wallet capture
+  - First mover advantage = build relationships before crowded pitch
+- **Action items for skills:**
+  - When scanning/verifying companies: Actively search for HSBC relationships
+  - When enriching companies: Flag HSBC clients as HIGH priority
+  - When generating outreach: Reference transition support ("We understand banking transitions...")
+  - Search patterns: "HSBC facility [company]", "HSBC trade finance [company]", annual reports mentioning HSBC
+- **Recording:**
+  - Document HSBC relationships in `existing_banker` field (engagement.csv)
+  - Tag companies with note: "HSBC exit opportunity"
+- **Status:** ACTIVE (as of Jan 2026)
+
+---
+
+### Template for Future Opportunities
+
+**Copy this template when adding new macro events:**
+
+#### [N]. [Event Name] ([Timeline]) - [PRIORITY LEVEL]
+- **Event:** [Description of market event/disruption]
+- **Target segment:** [Specific company characteristics affected]
+- **Overlap with our focus:** [How this intersects with our hunting strategy]
+- **Opportunity type:** [What acquisition play this enables]
+- **Timeline:** [When to act]
+- **Strategic value:**
+  - [Key advantage 1]
+  - [Key advantage 2]
+  - [Key advantage 3]
+- **Action items for skills:**
+  - [How scanning should adapt]
+  - [How verification should adapt]
+  - [How enrichment should adapt]
+  - [How outreach should adapt]
+- **Recording:** [How to document in CSVs]
+- **Status:** ACTIVE / MONITORING / RESOLVED / ARCHIVED
+
+---
+
+### Example Future Events to Monitor
+
+**Bank Exits/Mergers:**
+- Other international banks exiting Singapore SME
+- Local bank mergers creating client uncertainty
+- Foreign banks pivoting away from certain sectors
+
+**Regulatory Changes:**
+- MAS compliance requirements (e.g., AML, reporting)
+- Industry-specific regulations (healthcare licensing, logistics permits)
+- Tax incentive changes affecting certain sectors
+
+**Economic Disruptions:**
+- Interest rate shifts creating refinancing opportunities
+- Sector booms (e.g., healthcare post-pandemic, green tech subsidies)
+- Supply chain disruptions requiring working capital support
+
+**Competitive Intelligence:**
+- Competitor banks cutting back on certain sectors
+- New bank entrants disrupting pricing
+- Industry consolidation creating M&A needs
+
+**Usage Notes:**
+- Review and update this section monthly
+- Archive resolved opportunities (don't delete - useful for pattern learning)
+- Skills should check this section during research to prioritize accordingly
+- Expired opportunities should be moved to ARCHIVED status with resolution date
+
 ## Trigger Preferences (Reference)
 
 **High-Value Triggers:**
@@ -157,4 +238,4 @@ When researching companies, actively search for mentions of their current banker
 
 ---
 
-*Last updated: 2025-12-30*
+*Last updated: 2026-01-18*
