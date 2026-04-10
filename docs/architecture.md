@@ -6,9 +6,16 @@
 This system uses **flat files (CSV + Markdown)** instead of a traditional database to enable:
 - **Git version control** - Full audit trail of all changes
 - **Human-readable data** - Business users can inspect data in Excel
-- **Claude Code Web interface** - Natural language access via chat
+- **AI coding agent interface** - Natural language access via chat
 - **Zero infrastructure** - No servers, no databases, just files
 - **Portability** - Easy to export, backup, or migrate
+
+## Vendor Neutrality
+
+- The system is plain-text and file-based (CSV + Markdown).
+- The workflow is portable across AI coding agents.
+- The `/.claude/skills/` path is an implementation artifact, not a product lock-in.
+- Any capable repo-operating agent can follow the workflow by reading `WORKFLOW.md`, the data files, and the supporting docs.
 
 ### Human-AI Hybrid Model
 The system implements the Accelerator Framework from `sales_accelerator_concept.md`:
@@ -93,7 +100,7 @@ Skills are **not just prompts** - they are structured workflows with:
 - Clear scope boundaries (funnel-aware)
 - Data validation rules
 - Template-driven outputs (reduce hallucination)
-- Automatic git commits
+- File updates governed by user-triggered commits
 - Progress reporting
 
 ### Funnel-Aligned Skill Design
@@ -116,7 +123,7 @@ All skills follow this pattern:
 3. **Confirm with user** (if scope is large/ambiguous)
 4. **Execute operations** (web search, data validation, template filling)
 5. **Update data** (CSVs, documents)
-6. **Commit changes** (automatic git commit)
+6. **Update files** (commit only when explicitly requested by user)
 7. **Report results** (business-friendly summary)
 
 Example: enrich-company skill logic
@@ -128,16 +135,16 @@ IF user says "enrich logistics companies" THEN
   - IF count > 15 THEN ask user: "Found 18 companies to refresh, all or high-priority only?"
   - Execute based on choice
   - Update last_enriched for processed companies
-  - Commit with message "Enriched [N] logistics companies"
+  - If user requests, commit with message "Enriched [N] logistics companies"
 ```
 
-## User Interface (Claude Code Web Only)
+## User Interface (AI Coding Agent)
 
 ### Zero Technical Skills Required
 
 **User never:**
-- Edits CSVs directly (Claude does it via skills)
-- Uses git commands (automatic commits)
+- Edits CSVs directly (the agent does it via skills)
+- Uses git commands directly (commits are request-driven)
 - Writes code or scripts
 - Deals with file paths or syntax
 
@@ -148,11 +155,11 @@ IF user says "enrich logistics companies" THEN
 
 ### Session Model
 
-Each Claude Code Web session:
-1. Loads CLAUDE.md (system context)
+Each agent session:
+1. Loads WORKFLOW.md and environment notes (for example CLAUDE.md)
 2. Has access to all data files
 3. Can invoke skills
-4. Commits changes automatically
+4. Updates files and waits for user-triggered commit
 5. User sees only conversational interface
 
 ### State Persistence
@@ -232,9 +239,9 @@ From `sales_accelerator_concept.md`:
 
 ## Git Strategy
 
-### Automatic Commits
+### User-Triggered Commits
 
-Skills automatically commit after every data change:
+Skills update data and documents. Commits happen only when the user explicitly asks:
 
 **Commit message patterns:**
 - Data additions: "Added [N] candidates from [source]"
@@ -250,12 +257,9 @@ Git history provides:
 - Why changed (commit message)
 - Who changed (commit author - for multi-user future)
 
-### User Never Sees Git
+### Git Interaction
 
-All git operations are silent:
-- No "Committing changes..." messages to user
-- No git errors shown (handle gracefully)
-- User just sees: "YCH Group enriched ✓"
+When a commit is requested, keep messaging concise and business-friendly.
 
 ## Scalability Considerations
 
@@ -270,7 +274,7 @@ All git operations are silent:
 - Or archive inactive companies (archived/ folder)
 
 ### Multi-User Future
-- Each user has own Claude Code account
+- Each user can work through their preferred AI coding agent environment
 - GitHub as source of truth (shared repo)
 - Auto-sync on session start (git pull)
 - Auto-push on commit
@@ -286,7 +290,7 @@ All git operations are silent:
 
 ### Access Control
 - Repository permissions (GitHub private repo)
-- Claude Code login (Anthropic account)
+- Agent platform login (provider-specific)
 - No additional auth needed (file-based)
 
 ### Compliance
