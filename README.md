@@ -10,10 +10,12 @@
 
 A file-based CRM system that helps you systematically find, qualify, and engage Singapore SME prospects using AI-powered research and evidence-based outreach.
 
+This repository is designed to be operated by AI coding agents such as Claude Code, Codex, and similar repo-operating tools.
+
 **Current Pipeline:** 24 verified companies | 57 growth triggers | S$1.49B+ opportunities
 
 **Key Features:**
-- Natural language interface (Claude Code)
+- Natural language interface via AI coding agents (Claude Code, Codex, etc.)
 - Evidence-based lead discovery (89% triggers have evidence links)
 - Transparent trigger tracking (7 standardized categories)
 - Template-driven outreach generation (banker-ready outputs)
@@ -194,9 +196,10 @@ DBS SME Banking
 ## Need Help?
 
 **Documentation:**
+- `/WORKFLOW.md` - Canonical operational workflow (cross-agent)
+- `/AGENTS.md` - Agent entrypoint (vendor-neutral)
 - `/tests/TEST_REPORT_2025-12-31.md` - Full test results (12 test cases, all passed)
 - `/planning/MVP1_SUMMARY.md` - Complete implementation & testing summary
-- `/docs/workflow.md` - Detailed workflow examples
 - `/docs/skills-guide.md` - How skills work
 - `CLAUDE.md` - System instructions for Claude
 
@@ -213,7 +216,7 @@ This CRM uses:
 - **CSV files** for structured data (human-readable, version-controlled)
 - **Markdown files** for documents (emails, meeting notes)
 - **Git** for audit trail (you control commits via "commit this")
-- **Claude Code** as the interface (natural language, no coding)
+- **AI coding agent interface** (natural language, no coding)
 
 Everything is in plain text files - no proprietary formats, no vendor lock-in.
 

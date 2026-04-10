@@ -2,11 +2,15 @@
 
 ## Overview
 
-Skills are structured workflows that implement the Accelerator Framework. Each skill is a markdown file in `/.claude/skills/` that contains detailed instructions for Claude to execute specific tasks.
+Skills are structured workflows that implement the Accelerator Framework. Each skill is a markdown file in `/.claude/skills/` that contains executable task instructions.
+
+`/WORKFLOW.md` is the canonical cross-agent operational guide. This file is explanatory and should not override the live instructions in the skill files.
 
 This guide explains how each skill works, when to use it, and how to customize it.
 
 ---
+
+> Note: If this guide conflicts with `/.claude/skills/*`, follow the skill files.
 
 ## Skill 1: scan-leads
 
@@ -62,8 +66,7 @@ This guide explains how each skill works, when to use it, and how to customize i
 
 6. Write to candidates.csv
 
-7. Commit changes
-   Message: "Added [N] candidates from [source] - [sector]"
+7. Update files (no auto-commit)
 
 8. Report to user:
    - "[N] new candidates found"
@@ -77,14 +80,13 @@ This guide explains how each skill works, when to use it, and how to customize i
 ```
 User: "Scan E50 2024 awards for manufacturing companies"
 
-Claude executes scan-leads skill:
+Agent executes scan-leads skill:
 - Searches E50 2024 winner list
 - Filters for manufacturing sector
 - Finds 34 manufacturing companies
 - Checks against existing data
 - 12 already in system (skip)
 - 22 new candidates added to candidates.csv
-- Commits: "Added 22 candidates from E50 2024 - Manufacturing"
 - Reports: "22 new candidates found, ready for verification"
 ```
 
@@ -187,8 +189,8 @@ Claude executes scan-leads skill:
       - Update candidate status=dropped
       - Record drop_reason
 
-3. Commit changes
-   Message: "Verified [N] candidates: [X] passed, [Y] dropped"
+3. If user requests, commit changes
+   Suggested message: "Verified [N] candidates: [X] passed, [Y] dropped"
 
 4. Report to user:
    - Summary table of results
@@ -201,7 +203,7 @@ Claude executes scan-leads skill:
 ```
 User: "Verify all pending candidates"
 
-Claude executes verify-leads skill:
+Agent executes verify-leads skill:
 - Found 47 pending candidates
 - Verified 47 companies (checking website, LinkedIn, exclusions)
 - Results:
@@ -211,7 +213,6 @@ Claude executes verify-leads skill:
     - 5x MNC subsidiaries (DHL, FedEx, Siemens SG, ABB SG, Accenture SG)
     - 3x SGX-listed
     - 2x Public DBS mention found
-- Commits: "Verified 47 candidates: 29 passed, 18 dropped"
 - Reports: "29 new companies ready for enrichment"
 ```
 
@@ -347,8 +348,8 @@ Claude executes verify-leads skill:
    e) Progress update to user:
       - "Enriched [company]: found [N] triggers"
 
-4. Commit changes
-   Message: "Enriched [N] companies with [X] total triggers"
+4. If user requests, commit changes
+   Suggested message: "Enriched [N] companies with [X] total triggers"
 
 5. Report summary:
    - Total triggers found
@@ -362,7 +363,7 @@ Claude executes verify-leads skill:
 ```
 User: "Enrich YCH Group"
 
-Claude executes enrich-company skill:
+Agent executes enrich-company skill:
 - Researching YCH Group...
 - Found 4 trigger sources:
   1. Business Times article (Nov 2025): RM500M Malaysia investment
@@ -586,8 +587,8 @@ Claude executes enrich-company skill:
 8. Update company record:
    - Set current_stage=outreach_prepared (if was "enriched")
 
-9. Commit changes:
-   Message: "Generated prospect pack for [company]"
+9. If user requests, commit changes:
+   Suggested message: "Generated prospect pack for [company]"
 
 10. Report to user:
     - Show the email draft
@@ -600,7 +601,7 @@ Claude executes enrich-company skill:
 ```
 User: "Generate prospect pack for Yang Kee Logistics"
 
-Claude executes generate-prospect-pack skill:
+Agent executes generate-prospect-pack skill:
 - Reading Yang Kee Logistics data...
 - Found 4 triggers (2 expansion, 1 capex, 1 contract)
 - Selected top 2 triggers for outreach:
@@ -682,7 +683,7 @@ Update Yang Kee Logistics to "Outreach Prepared" stage?
 ## When to Use
 [Scenarios where this skill is invoked]
 
-## Instructions for Claude
+## Instructions for the Agent
 
 You are helping the user [task description]. Follow these steps exactly:
 
@@ -699,7 +700,7 @@ You are helping the user [task description]. Follow these steps exactly:
 
 ### Final Step: Reporting
 [What to tell the user]
-[What to commit to git]
+[What files were updated and suggested commit message if user requests commit]
 
 ## Business Rules
 - [Rule 1]
@@ -743,9 +744,9 @@ IF [error condition] THEN [recovery action]
 - ✅ "Use template from /data/templates/outreach-email-template.md. Fill {{COMPANY}} with common_name, {{TRIGGER}} with top trigger description..."
 
 **7. Git Hygiene**
-- Always commit after data changes
-- Descriptive commit messages
-- Never mention git to user
+- Skills update files; do not auto-commit
+- Commit only when user explicitly requests
+- Use descriptive commit messages when committing
 
 **8. Error Recovery**
 - "If company not found, ask user: 'Company not found. Did you mean [similar name]? Or add as new lead?'"
@@ -762,7 +763,7 @@ IF [error condition] THEN [recovery action]
 - [ ] Filters out duplicates (existing companies)
 - [ ] Correctly extracts company names (handles variations)
 - [ ] Sets correct initial_trigger when obvious
-- [ ] Commits with clear message
+- [ ] Updates files correctly without malformed CSVs
 
 **verify-leads:**
 - [ ] Successfully verifies website + LinkedIn existence
@@ -831,7 +832,7 @@ IF [error condition] THEN [recovery action]
 ### Version Control for Skills
 
 Since skills are markdown files in git:
-- Each update is a commit
+- Each update should be reviewable; commit only when user explicitly asks
 - Can revert if skill change causes issues
 - Can A/B test (temporarily use different version)
 
@@ -879,7 +880,7 @@ Skills transform the CRM from a data repository into an **execution engine**. Ea
 - Uses templates to ensure consistency
 - Validates data before acting
 - Communicates progress to user
-- Commits changes automatically
+- Leaves commit timing to explicit user instruction
 - Suggests logical next steps
 
 The skills work together as a **workflow orchestration system** that guides the user from discovery → verification → enrichment → engagement, maintaining transparency and control at every step.
