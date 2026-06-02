@@ -1,0 +1,63 @@
+name: Weekly Lead Scan
+
+on:
+  schedule:
+    # Every Monday at 08:00 SGT (00:00 UTC)
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'Number of new leads to generate'
+        required: false
+        default: '5'
+
+jobs:
+  scan-leads:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: claude/relaxed-ride-a9gPS
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Run lead scan
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          COUNT=${{ github.event.inputs.count || '5' }}
+          claude --print \
+            "Read /WORKFLOW.md and /data/user-parameters.md. \
+            Then read /data/candidates.csv and /data/companies.csv to build a full exclusion list of existing company names. \
+            Use the scan-leads skill in broad search mode to find exactly ${COUNT} NEW Singapore SME companies \
+            across target sectors (Logistics, Manufacturing, Healthcare, F&B, Technology) \
+            that are NOT already in the exclusion list. \
+            For each company found: verify it passes exclusion filters (not MNC subsidiary, not holdco >S\$100M, not public-listed). \
+            Add them to /data/candidates.csv with status=pending and today's date. \
+            Auto-assign sequential CAND### IDs continuing from the current highest. \
+            Do NOT commit — just update the CSV."
+
+      - name: Commit and push new leads
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/candidates.csv
+          if git diff --cached --quiet; then
+            echo "No new leads added — candidates.csv unchanged."
+          else
+            ADDED=$(git diff --cached --stat | grep candidates.csv | grep -oP '\d+ insertion' | grep -oP '\d+')
+            git commit -m "chore: weekly scan — add ${ADDED:-5} new leads [skip ci]"
+            git push origin claude/relaxed-ride-a9gPS
+            echo "Pushed ${ADDED:-5} new lead(s) to candidates.csv"
+          fi
